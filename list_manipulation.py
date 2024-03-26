@@ -16,7 +16,7 @@ def group_anagrams(strs: List[str]) -> List[List[str]]:
 
 
 
-# group anagrams into a list ## runtime beats 80%, memory beats 99%
+# lru cache ## runtime beats 80%, memory beats 99%
 #import collections
 class LRUCache:
 
@@ -37,54 +37,30 @@ class LRUCache:
             self.cache.popitem(last = False)
 
 
+
+def compress(chars: List[str]) -> int:
+    ans = 0
+    i = 0
+
+    while i < len(chars):
+        letter = chars[i]
+        count = 0
+        while i < len(chars) and chars[i] == letter:
+            count += 1
+            i += 1
+        chars[ans] = letter
+        ans += 1
+        if count > 1:
+            for c in str(count):
+                chars[ans] = c
+                ans += 1
+
+    return ans
+
+
 if __name__ == '__main__':
     list1 = ["eat", "", " ", "  ", "tea", "tan", "ate", "nat", "bat", ""]
     chars = ["a", "a", "c", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "a"]
-    chars = ["a", "a", "c", "b", "b", "b", "xx"]
+    chars = ["a", "a", "c", "b", "b", "b"]
 
-    last_char = None
-    group_size = 1
-    index = 0
-    while index < len(chars):
-        if chars[index] == last_char:
-            group_size += 1
-            chars.pop(index)
-            index -=1
-        else:
-            if 1 < group_size:
-                chars.insert(index, group_size)
-            group_size = 1
-
-        last_char = chars[index]
-        index += 1
-    print(chars)
-    chars.pop(len(chars) -1 )
-    print(chars)
-    print((len(chars)))
-    # print(group_anagrams(list1))
-    # capacity = 3
-    # obj = LRUCache(capacity)
-    # param_1 = obj.get(3)
-    # print(f"param 1: {param_1}")
-    # obj.put(1, "one")
-    # param_1 = obj.get(1)
-    # print(f"param 1: {param_1}")
-    # obj.put(2, "two")
-    # param_1 = obj.get(3)
-    # print(f"param 1: {param_1}")
-    # obj.put(3, "three")
-    # param_1 = obj.get(3)
-    # print(f"param 1: {param_1}")
-    # obj.put(1, "one ")
-    # param_1 = obj.get(1)
-    # print(f"param 1: {param_1}")
-    # obj.put(32, "fourth")
-    # param_1 = obj.get(1)
-    # print(f"param 1: {param_1}")
-    # param_1 = obj.get(32)
-    # print(f"param 1: {param_1}")
-    # print(f"param 1: {param_1}")
-
-    chars.insert(index, str(group_size // 10))
-    group_size %= 10
-    index += 1
+    print(compress(chars))
